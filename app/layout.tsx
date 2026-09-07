@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import Navbar from "./_components/navbar";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -24,7 +25,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn(geistSans.variable, jetbrainsMono.variable, "font-mono")}
     >
-      <body>{children}</body>
+      <body className="grid grid-cols-[1fr_3fr] grid-rows-[auto_1fr_auto] min-h-screen">
+        <header className="sticky top-0 border-b bg-background/20 backdrop-blur-sm col-span-2 p-2">
+          <Navbar />
+        </header>
+        <aside className="border-r p-4 hidden md:block">
+          <section className="sticky top-12">sidebar</section>
+        </aside>
+        <main className="p-4">{children}</main>
+        <footer className="col-span-2 border-t py-10 px-4 h-fit">
+          here goes the footer
+        </footer>
+      </body>
     </html>
   );
 }
