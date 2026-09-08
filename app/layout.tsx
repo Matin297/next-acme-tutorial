@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { geistSans, jetbrainsMono } from "./fonts";
 import "./globals.css";
 import Navbar from "./_components/navbar";
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +13,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn(geistSans.variable, jetbrainsMono.variable, "font-mono")}
+      className={cn(
+        geistSans.variable,
+        jetbrainsMono.variable,
+        "font-mono",
+        "antialiased",
+      )}
     >
       <body className="grid grid-cols-[1fr_3fr] grid-rows-[auto_1fr_auto] min-h-screen">
         <header className="sticky top-0 border-b bg-background/20 backdrop-blur-sm col-span-2 p-2">
@@ -34,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </aside>
         <main className="p-4">{children}</main>
         <footer className="col-span-2 border-t py-10 px-4 h-fit">
-          here goes the footer
+          <section className="container mx-auto">here goes the footer</section>
         </footer>
       </body>
     </html>
