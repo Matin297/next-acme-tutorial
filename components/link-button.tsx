@@ -15,7 +15,7 @@ export default function LinkButton({
   return (
     <Link
       href={href}
-      className={cn(buttonVariants({ variant: "link" }), className)}
+      className={cn(buttonVariants({ variant: "link" }), "text-sm", className)}
     >
       {children}
     </Link>

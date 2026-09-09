@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import { geistSans, jetbrainsMono } from "./fonts";
 import "./globals.css";
-import Navbar from "./_components/navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,18 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         "antialiased",
       )}
     >
-      <body className="grid grid-cols-[1fr_3fr] grid-rows-[auto_1fr_auto] min-h-screen">
-        <header className="sticky top-0 border-b bg-background/20 backdrop-blur-sm col-span-2 p-2">
-          <Navbar />
-        </header>
-        <aside className="border-r p-4 hidden md:block">
-          <section className="sticky top-12">sidebar</section>
-        </aside>
-        <main className="p-4">{children}</main>
-        <footer className="col-span-2 border-t py-10 px-4 h-fit">
-          <section className="container mx-auto">here goes the footer</section>
-        </footer>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
