@@ -10,6 +10,8 @@ export async function fetchRevenue() {
   }
 }
 
+export type TRevenues = Awaited<ReturnType<typeof fetchRevenue>>;
+
 export async function fetchLatestInvoices(limit: number) {
   try {
     const data = await db.orm.public.Invoice.orderBy((invoice) =>

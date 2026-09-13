@@ -7,6 +7,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import type { TRevenues } from "../data";
 
 const CHART_CONFIG = {
   revenue: {
@@ -15,11 +16,7 @@ const CHART_CONFIG = {
   },
 } satisfies ChartConfig;
 
-export default function RevenueBarChart({
-  revenue,
-}: {
-  revenue: { month: string; revenue: number }[];
-}) {
+export default function RevenueBarChart({ revenue }: { revenue: TRevenues }) {
   return (
     <ChartContainer config={CHART_CONFIG} className="min-h-50 w-full">
       <BarChart accessibilityLayer data={revenue}>
