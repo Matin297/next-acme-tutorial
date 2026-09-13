@@ -36,7 +36,7 @@ export default function Sidebar() {
         <li key={href}>
           <LinkButton
             className={cn({
-              "font-bold text-amber-500": pathname === href,
+              "font-bold text-amber-500 dark:text-amber-600": pathname === href,
             })}
             href={href}
           >

@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="grid grid-cols-[200px_1fr] grid-rows-[auto_1fr_auto] min-h-screen">
+    <section className="grid grid-cols-1 md:grid-cols-[200px_1fr] grid-rows-[auto_1fr_auto] min-h-screen">
       <header className="sticky top-0 border-b bg-background/20 backdrop-blur-sm col-span-2 p-2">
         <Navbar />
       </header>
