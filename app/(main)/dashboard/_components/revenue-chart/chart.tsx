@@ -7,7 +7,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import type { TRevenues } from "../data";
+import type { TRevenues } from "../../data";
 
 const CHART_CONFIG = {
   revenue: {

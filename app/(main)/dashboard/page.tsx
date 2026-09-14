@@ -11,13 +11,12 @@ import {
 import LatestInvoices, {
   LatestInvoicesFallback,
 } from "./_components/latest-invoices";
-import RevenueBarChart from "./_components/revenue-bar-chart";
+import RevenueChart, {
+  RevenueChartFallback,
+} from "./_components/revenue-chart";
 import Statistics, { StatisticsFallback } from "./_components/statistics";
-import { fetchRevenue } from "./data";
 
 export default async function DashboardPage() {
-  const [revenue] = await Promise.all([fetchRevenue()]);
-
   return (
     <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
       <Suspense fallback={<StatisticsFallback className="col-span-2" />}>
@@ -27,8 +26,10 @@ export default async function DashboardPage() {
         <CardHeader>
           <CardTitle>Recent Revenue</CardTitle>
         </CardHeader>
-        <CardContent>
-          <RevenueBarChart revenue={revenue} />
+        <CardContent className="grow">
+          <Suspense fallback={<RevenueChartFallback />}>
+            <RevenueChart />
+          </Suspense>
         </CardContent>
         <CardFooter className="text-muted-foreground gap-1">
           <CalendarIcon className="w-4" />
