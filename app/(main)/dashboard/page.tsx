@@ -1,5 +1,5 @@
-import { ArrowPathIcon, CalendarIcon } from "@heroicons/react/24/outline";
-import { formatDistanceToNow } from "date-fns";
+import { CalendarIcon } from "@heroicons/react/24/outline";
+import { Suspense } from "react";
 import {
   Card,
   CardContent,
@@ -7,18 +7,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import LatestInvoices from "./_components/latest-invoices";
+
+import LatestInvoices, {
+  LatestInvoicesFallback,
+} from "./_components/latest-invoices";
 import RevenueBarChart from "./_components/revenue-bar-chart";
-import { fetchLatestInvoices, fetchRevenue } from "./data";
+import Statistics, { StatisticsFallback } from "./_components/statistics";
+import { fetchRevenue } from "./data";
 
 export default async function DashboardPage() {
-  const [revenue, latestInvoices] = await Promise.all([
-    fetchRevenue(),
-    fetchLatestInvoices(5),
-  ]);
+  const [revenue] = await Promise.all([fetchRevenue()]);
 
   return (
     <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
+      <Suspense fallback={<StatisticsFallback className="col-span-2" />}>
+        <Statistics className="col-span-2" />
+      </Suspense>
       <Card className="col-span-1">
         <CardHeader>
           <CardTitle>Recent Revenue</CardTitle>
@@ -35,17 +39,9 @@ export default async function DashboardPage() {
         <CardHeader>
           <CardTitle>Latest Invoices</CardTitle>
         </CardHeader>
-        <CardContent className="grow">
-          <LatestInvoices invoices={latestInvoices.data} />
-        </CardContent>
-        <CardFooter className="text-muted-foreground gap-1">
-          <ArrowPathIcon className="w-4" />
-          <p className="text-xs">
-            {formatDistanceToNow(latestInvoices.lastUpdated, {
-              addSuffix: true,
-            })}
-          </p>
-        </CardFooter>
+        <Suspense fallback={<LatestInvoicesFallback />}>
+          <LatestInvoices />
+        </Suspense>
       </Card>
     </section>
   );

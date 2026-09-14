@@ -33,6 +33,38 @@ export async function fetchLatestInvoices(limit: number) {
   }
 }
 
-export type TLatestInvoices = Awaited<
-  ReturnType<typeof fetchLatestInvoices>
->["data"];
+export async function fetchDashboardStats() {
+  try {
+    const invoicesStatsQuery = db.orm.public.Invoice.groupBy(
+      "status",
+    ).aggregate((invoices) => ({
+      amount: invoices.sum("amount"),
+      count: invoices.count(),
+    }));
+
+    const customersStatsQuery = await db.orm.public.Customer.aggregate(
+      (customers) => ({ total: customers.count() }),
+    );
+
+    const [invoicesStats, customersStats] = await Promise.all([
+      invoicesStatsQuery,
+      customersStatsQuery,
+    ]);
+
+    return {
+      invoices: {
+        total: invoicesStats.reduce((count, stat) => count + stat.count, 0),
+        collected:
+          invoicesStats.find(({ status }) => status === "paid")?.amount ?? 0,
+        pending:
+          invoicesStats.find(({ status }) => status === "pending")?.amount ?? 0,
+      },
+      customers: {
+        total: customersStats.total,
+      },
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch dashboard stats.");
+  }
+}
