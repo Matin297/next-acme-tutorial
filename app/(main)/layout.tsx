@@ -8,7 +8,7 @@ export default function MainLayout({
 }) {
   return (
     <section className="grid grid-cols-1 md:grid-cols-[200px_1fr] grid-rows-[auto_1fr_auto] min-h-screen">
-      <header className="sticky top-0 border-b bg-background/20 backdrop-blur-sm col-span-2 p-2">
+      <header className="sticky z-10 top-0 border-b bg-background/20 backdrop-blur-xs col-span-2 p-2">
         <Navbar />
       </header>
       <aside className="border-r p-4 hidden md:block">
