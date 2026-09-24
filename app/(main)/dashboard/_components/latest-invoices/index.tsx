@@ -18,7 +18,6 @@ export default async function LatestInvoices() {
                 <AvatarImage
                   src={customer.imageUrl ?? ""}
                   alt={customer.name}
-                  className="grayscale"
                 />
                 <AvatarFallback>
                   {getNameInitials(customer.name)}
