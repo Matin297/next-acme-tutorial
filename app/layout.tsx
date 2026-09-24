@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { cn } from "@/lib/utils";
 import { geistSans, jetbrainsMono } from "./fonts";
 import "./globals.css";
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         "antialiased",
       )}
     >
-      <body>{children}</body>
+      <body>
+        <NuqsAdapter>{children}</NuqsAdapter>
+      </body>
     </html>
   );
 }
