@@ -2,6 +2,7 @@ import {
   columnFilteringFeature,
   columnPinningFeature,
   filterFn_includesString,
+  filterFn_inNumberRange,
   metaHelper,
   rowPaginationFeature,
   rowSelectionFeature,
@@ -22,6 +23,7 @@ export const features = tableFeatures({
   columnPinningFeature,
   filterFns: {
     includesString: filterFn_includesString,
+    inNumberRange: filterFn_inNumberRange,
   },
   columnMeta: metaHelper<DataTableColumnMeta>(),
 });

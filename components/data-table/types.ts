@@ -6,27 +6,28 @@ export interface ColumnFilterProps<TData extends RowData> {
   column: Column<TFeatures, TData, unknown>;
 }
 
-export type FilterValueMap = {
-  text: string;
-  range: [number | undefined, number | undefined];
-  select: string;
-  radio: string;
-  checkbox: string[];
-  date: Date;
-};
-
-export type TFilterVariant = keyof FilterValueMap;
-
-export type FilterValue<TVariant extends TFilterVariant> =
-  FilterValueMap[TVariant];
-
-export type FilterFormData<TVariant extends TFilterVariant> = {
-  value: FilterValue<TVariant>;
-};
+export type TFilterVariant =
+  | "text"
+  | "range"
+  | "select"
+  | "radio"
+  | "checkbox"
+  | "date";
 
 export const textFilterSchema = z.object({
   value: z.string().min(1, { message: "Search query is required." }),
 });
+
+export type TTextFilter = z.infer<typeof textFilterSchema>;
+
+export const rangeFilterSchema = z.object({
+  value: z.tuple([z.number(), z.number()]).refine(([min, max]) => min <= max, {
+    message: "Minimum must be less than or equal to maximum",
+  }),
+});
+
+export type TRange = [number | undefined, number | undefined];
+export type TRangeFilter = z.infer<typeof rangeFilterSchema>;
 
 export const filtersSchema = z.array(
   z.object({

@@ -19,10 +19,7 @@ export const filtersSchema = z.array(
     }),
     z.object({
       id: z.literal("amount"),
-      value: z.object({
-        min: z.number().optional(),
-        max: z.number().optional(),
-      }),
+      value: z.tuple([z.number(), z.number()]),
     }),
   ]),
 );
@@ -60,14 +57,13 @@ export async function fetchInvoices({
 
     for (const filter of filters) {
       switch (filter.id) {
-        case "amount":
+        case "amount": {
+          const [min, max] = filter.value;
           invoices = invoices.where((invoice) =>
-            and(
-              invoice.amount.gte(filter.value.min ?? 0),
-              invoice.amount.lte(filter.value.max ?? Infinity),
-            ),
+            and(invoice.amount.gte(min), invoice.amount.lte(max)),
           );
           break;
+        }
         case "status":
           invoices = invoices.where((invoice) =>
             invoice.status.in(filter.value),

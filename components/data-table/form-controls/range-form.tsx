@@ -1,33 +1,34 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { RowData } from "@tanstack/react-table";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
+import { Slider } from "@/components/ui/slider";
+import { formatNumber } from "@/lib/utils";
 import {
   type ColumnFilterProps,
-  type TTextFilter,
-  textFilterSchema,
+  rangeFilterSchema,
+  type TRangeFilter,
 } from "../types";
 
-export default function TextForm<TData extends RowData>({
+const DEFAULT: [number, number] = [0, 500_000];
+const STEP = 1000;
+
+export default function RangeForm<TData extends RowData>({
   column,
 }: ColumnFilterProps<TData>) {
   const defaultValue = column.getFilterValue();
 
-  const form = useForm<TTextFilter>({
-    resolver: zodResolver(textFilterSchema),
+  const form = useForm<TRangeFilter>({
+    resolver: zodResolver(rangeFilterSchema),
     defaultValues: {
-      value: typeof defaultValue === "string" ? defaultValue : "",
+      value: Array.isArray(defaultValue)
+        ? (defaultValue as [number, number])
+        : DEFAULT,
     },
   });
 
-  function onSubmit(data: TTextFilter) {
+  function onSubmit(data: TRangeFilter) {
     column.setFilterValue(data.value);
     column.table.resetPageIndex();
   }
@@ -39,19 +40,24 @@ export default function TextForm<TData extends RowData>({
         control={form.control}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="search-input">Search</FieldLabel>
-            <InputGroup className="max-w-xs">
-              <InputGroupInput
+            <FieldLabel htmlFor="range-input">Range</FieldLabel>
+            <section className="relative pt-5">
+              <span className="absolute left-0 top-0">
+                {formatNumber(field.value[0])}
+              </span>
+              <Slider
                 {...field}
-                id="search-input"
+                onValueChange={field.onChange}
+                id="range-input"
+                min={DEFAULT[0]}
+                max={DEFAULT[1]}
+                step={STEP}
                 aria-invalid={fieldState.invalid}
-                placeholder="Search column..."
-                autoComplete="off"
               />
-              <InputGroupAddon>
-                <MagnifyingGlassIcon className="w-4" />
-              </InputGroupAddon>
-            </InputGroup>
+              <span className="absolute right-0 top-0">
+                {formatNumber(field.value[1])}
+              </span>
+            </section>
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
         )}
@@ -66,7 +72,7 @@ export default function TextForm<TData extends RowData>({
           variant="outline"
           className="rounded-sm"
           onClick={() => {
-            form.reset({ value: "" });
+            form.reset({ value: DEFAULT });
             column.setFilterValue(undefined);
             column.table.resetPageIndex();
           }}
