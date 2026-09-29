@@ -3,6 +3,7 @@ import {
   columnPinningFeature,
   filterFn_includesString,
   filterFn_inNumberRange,
+  filterFn_weakEquals,
   metaHelper,
   rowPaginationFeature,
   rowSelectionFeature,
@@ -24,6 +25,7 @@ export const features = tableFeatures({
   filterFns: {
     includesString: filterFn_includesString,
     inNumberRange: filterFn_inNumberRange,
+    weakEquals: filterFn_weakEquals,
   },
   columnMeta: metaHelper<DataTableColumnMeta>(),
 });

@@ -3,7 +3,7 @@ import { createLoader, parseAsJson, parseAsString } from "nuqs/server";
 import { paginationSchema } from "@/components/data-table/types";
 import SearchBox from "@/components/search-box";
 import InvoicesTable from "./_components/table";
-import { fetchInvoices, filtersSchema } from "./data";
+import { fetchInvoices, serverFiltersSchema } from "./data";
 
 const loadSearchParams = createLoader({
   q: parseAsString.withDefault(""),
@@ -11,7 +11,7 @@ const loadSearchParams = createLoader({
     pageIndex: 0,
     pageSize: 5,
   }),
-  filters: parseAsJson(filtersSchema).withDefault([]),
+  filters: parseAsJson(serverFiltersSchema).withDefault([]),
 });
 
 export default async function InvoicesPage({

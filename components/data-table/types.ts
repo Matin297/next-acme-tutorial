@@ -21,13 +21,22 @@ export const textFilterSchema = z.object({
 export type TTextFilter = z.infer<typeof textFilterSchema>;
 
 export const rangeFilterSchema = z.object({
-  value: z.tuple([z.number(), z.number()]).refine(([min, max]) => min <= max, {
-    message: "Minimum must be less than or equal to maximum",
-  }),
+  value: z.tuple([z.number(), z.number()]),
 });
 
 export type TRange = [number | undefined, number | undefined];
 export type TRangeFilter = z.infer<typeof rangeFilterSchema>;
+
+export const dateRangeFilterSchema = z.object({
+  value: z
+    .object({
+      from: z.coerce.date<Date>(),
+      to: z.coerce.date<Date>().optional(),
+    })
+    .optional(),
+});
+
+export type TDateRangeFilter = z.infer<typeof dateRangeFilterSchema>;
 
 export const filtersSchema = z.array(
   z.object({

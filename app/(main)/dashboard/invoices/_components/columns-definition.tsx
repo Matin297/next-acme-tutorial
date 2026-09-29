@@ -47,7 +47,7 @@ export const columns = columnHelper.columns([
   }),
   columnHelper.accessor("date", {
     header: "Date",
-    cell: ({ getValue }) => format(new Date(getValue()), "dd/MM/yyyy"),
+    cell: ({ getValue }) => format(new Date(getValue()), "LLL dd, y"),
     meta: { filterVariant: "date" },
   }),
   columnHelper.accessor("status", {

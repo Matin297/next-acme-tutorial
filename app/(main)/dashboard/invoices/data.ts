@@ -1,9 +1,10 @@
 import { and, or } from "@prisma/orm-postgres/orm-client";
+import { endOfDay } from "date-fns";
 import * as z from "zod";
 import { db } from "@/lib/prisma/db";
 import type { InvoiceStatus } from "@/lib/prisma/utility-types";
 
-export const filtersSchema = z.array(
+export const serverFiltersSchema = z.array(
   z.discriminatedUnion("id", [
     z.object({
       id: z.literal("status"),
@@ -21,10 +22,17 @@ export const filtersSchema = z.array(
       id: z.literal("amount"),
       value: z.tuple([z.number(), z.number()]),
     }),
+    z.object({
+      id: z.literal("date"),
+      value: z.object({
+        from: z.coerce.date<Date>(),
+        to: z.coerce.date<Date>().optional(),
+      }),
+    }),
   ]),
 );
 
-type TInvoiceFilters = z.infer<typeof filtersSchema>;
+type TInvoiceFilters = z.output<typeof serverFiltersSchema>;
 
 export async function fetchInvoices({
   pageIndex,
@@ -57,6 +65,18 @@ export async function fetchInvoices({
 
     for (const filter of filters) {
       switch (filter.id) {
+        case "date": {
+          const { from, to } = filter.value;
+          invoices = invoices.where((invoice) =>
+            to
+              ? and(
+                  invoice.date.gte(from.toTemporalInstant()),
+                  invoice.date.lte(endOfDay(to).toTemporalInstant()),
+                )
+              : invoice.date.gte(from.toTemporalInstant()),
+          );
+          break;
+        }
         case "amount": {
           const [min, max] = filter.value;
           invoices = invoices.where((invoice) =>
