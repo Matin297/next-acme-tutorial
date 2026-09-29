@@ -32,6 +32,12 @@ export default function TextForm<TData extends RowData>({
     column.table.resetPageIndex();
   }
 
+  function onClear() {
+    form.reset({ value: "" });
+    column.setFilterValue(undefined);
+    column.table.resetPageIndex();
+  }
+
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <Controller
@@ -65,11 +71,7 @@ export default function TextForm<TData extends RowData>({
           size="xs"
           variant="outline"
           className="rounded-sm"
-          onClick={() => {
-            form.reset({ value: "" });
-            column.setFilterValue(undefined);
-            column.table.resetPageIndex();
-          }}
+          onClick={onClear}
         >
           Clear
         </Button>
