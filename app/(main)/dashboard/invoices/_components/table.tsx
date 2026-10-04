@@ -7,8 +7,9 @@ import {
 } from "@tanstack/react-table";
 import { parseAsJson, useQueryState } from "nuqs";
 import DataTable, { features } from "@/components/data-table";
-import { filtersSchema, paginationSchema } from "@/components/data-table/types";
+import { paginationSchema } from "@/components/data-table/types";
 import type { TInvoice } from "../data";
+import { invoiceFiltersSchema } from "../types";
 import { columns } from "./columns-definition";
 
 export default function InvoicesTable({
@@ -20,7 +21,7 @@ export default function InvoicesTable({
 }) {
   const [filters, setFilters] = useQueryState<ColumnFiltersState>(
     "filters",
-    parseAsJson(filtersSchema).withDefault([]),
+    parseAsJson(invoiceFiltersSchema).withDefault([]),
   );
 
   const [pagination, setPagination] = useQueryState<PaginationState>(
