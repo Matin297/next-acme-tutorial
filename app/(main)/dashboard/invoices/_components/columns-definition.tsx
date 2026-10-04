@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 import type { TFeatures } from "@/components/data-table/features";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { INVOICE_STATUS_FILTER } from "@/lib/prisma/utility-types";
 import { formatNumber, getNameInitials } from "@/lib/utils";
 import type { TInvoiceData } from "../data";
 import StatusBadge from "./status-badge";
@@ -53,6 +54,9 @@ export const columns = columnHelper.columns([
   columnHelper.accessor("status", {
     header: "Status",
     cell: ({ getValue }) => <StatusBadge status={getValue()} />,
-    meta: { filterVariant: "checkbox" },
+    meta: {
+      filterVariant: "checkbox",
+      filterOptions: INVOICE_STATUS_FILTER,
+    },
   }),
 ]);

@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import type { InvoiceStatus } from "@/lib/prisma/utility-types";
+import { INVOICE_STATUS, type InvoiceStatus } from "@/lib/prisma/utility-types";
 import { cn } from "@/lib/utils";
 
 export default function StatusBadge({ status }: { status: InvoiceStatus }) {
@@ -11,7 +11,7 @@ export default function StatusBadge({ status }: { status: InvoiceStatus }) {
         "bg-yellow-100 text-yellow-700": status === "pending",
       })}
     >
-      {status}
+      {INVOICE_STATUS[status]}
     </Badge>
   );
 }
