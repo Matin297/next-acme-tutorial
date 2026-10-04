@@ -10,11 +10,7 @@ import {
   rowSortingFeature,
   tableFeatures,
 } from "@tanstack/react-table";
-import type { TFilterVariant } from "./types";
-
-interface DataTableColumnMeta {
-  filterVariant?: TFilterVariant;
-}
+import type { DataTableColumnMeta } from "./types";
 
 export const features = tableFeatures({
   rowPaginationFeature,

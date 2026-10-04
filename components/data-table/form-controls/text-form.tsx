@@ -12,7 +12,7 @@ import {
 import {
   type ColumnFilterProps,
   type TTextFilter,
-  textFilterSchema,
+  textFilterFormSchema,
 } from "../types";
 
 export default function TextForm<TData extends RowData>({
@@ -21,7 +21,7 @@ export default function TextForm<TData extends RowData>({
   const defaultValue = column.getFilterValue();
 
   const form = useForm<TTextFilter>({
-    resolver: zodResolver(textFilterSchema),
+    resolver: zodResolver(textFilterFormSchema),
     defaultValues: {
       value: typeof defaultValue === "string" ? defaultValue : "",
     },

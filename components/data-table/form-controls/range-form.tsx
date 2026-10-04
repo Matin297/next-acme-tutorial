@@ -7,7 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { formatNumber } from "@/lib/utils";
 import {
   type ColumnFilterProps,
-  rangeFilterSchema,
+  rangeFilterFormSchema,
   type TRangeFilter,
 } from "../types";
 
@@ -20,7 +20,7 @@ export default function RangeForm<TData extends RowData>({
   const defaultValue = column.getFilterValue();
 
   const form = useForm<TRangeFilter>({
-    resolver: zodResolver(rangeFilterSchema),
+    resolver: zodResolver(rangeFilterFormSchema),
     defaultValues: {
       value: Array.isArray(defaultValue)
         ? (defaultValue as [number, number])

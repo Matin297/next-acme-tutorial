@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/popover";
 import {
   type ColumnFilterProps,
-  dateRangeFilterSchema,
+  dateRangeFilterFormSchema,
   type TDateRangeFilter,
 } from "../types";
 
@@ -21,8 +21,8 @@ export default function DateForm<TData extends RowData>({
   column,
 }: ColumnFilterProps<TData>) {
   const form = useForm<TDateRangeFilter>({
-    resolver: zodResolver(dateRangeFilterSchema),
-    defaultValues: dateRangeFilterSchema.parse({
+    resolver: zodResolver(dateRangeFilterFormSchema),
+    defaultValues: dateRangeFilterFormSchema.parse({
       value: column.getFilterValue(),
     }),
   });
