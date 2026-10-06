@@ -1,7 +1,6 @@
 import type { SearchParams } from "nuqs/server";
 import { createLoader, parseAsJson, parseAsString } from "nuqs/server";
 import { paginationSchema } from "@/components/data-table/types";
-import SearchBox from "@/components/search-box";
 import InvoicesTable from "./_components/table";
 import { fetchInvoices } from "./data";
 import { invoiceFiltersSchema } from "./types";
@@ -35,7 +34,6 @@ export default async function InvoicesPage({
 
   return (
     <section className="space-y-4">
-      <SearchBox />
       <InvoicesTable invoices={data} total={total} />
     </section>
   );

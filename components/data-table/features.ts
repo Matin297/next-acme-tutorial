@@ -4,6 +4,7 @@ import {
   filterFn_includesString,
   filterFn_inNumberRange,
   filterFn_weakEquals,
+  globalFilteringFeature,
   metaHelper,
   rowPaginationFeature,
   rowSelectionFeature,
@@ -16,6 +17,7 @@ export const features = tableFeatures({
   rowPaginationFeature,
   rowSelectionFeature,
   columnFilteringFeature,
+  globalFilteringFeature,
   rowSortingFeature,
   columnPinningFeature,
   filterFns: {

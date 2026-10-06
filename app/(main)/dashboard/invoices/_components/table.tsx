@@ -6,6 +6,7 @@ import {
   useTable,
 } from "@tanstack/react-table";
 import { parseAsJson, useQueryState } from "nuqs";
+import { useTransition } from "react";
 import DataTable, { features } from "@/components/data-table";
 import { paginationSchema } from "@/components/data-table/types";
 import type { TInvoice } from "../data";
@@ -19,9 +20,18 @@ export default function InvoicesTable({
   invoices: TInvoice["data"];
   total: number;
 }) {
+  const [isPending, startTransition] = useTransition();
+  const [query, setQuery] = useQueryState("q", {
+    startTransition,
+    shallow: false,
+    defaultValue: "",
+  });
+
   const [filters, setFilters] = useQueryState<ColumnFiltersState>(
     "filters",
-    parseAsJson(invoiceFiltersSchema).withDefault([]),
+    parseAsJson(invoiceFiltersSchema)
+      .withDefault([])
+      .withOptions({ startTransition }),
   );
 
   const [pagination, setPagination] = useQueryState<PaginationState>(
@@ -31,7 +41,7 @@ export default function InvoicesTable({
         pageIndex: 0,
         pageSize: 5,
       })
-      .withOptions({ shallow: false }),
+      .withOptions({ startTransition }),
   );
 
   const table = useTable({
@@ -43,12 +53,14 @@ export default function InvoicesTable({
     manualPagination: true,
     manualFiltering: true,
     state: {
+      globalFilter: query,
       columnFilters: filters,
       pagination: pagination,
     },
+    onGlobalFilterChange: setQuery,
     onColumnFiltersChange: setFilters,
     onPaginationChange: setPagination,
   });
 
-  return <DataTable table={table} />;
+  return <DataTable table={table} isPending={isPending} />;
 }
