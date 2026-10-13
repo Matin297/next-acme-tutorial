@@ -1,3 +1,4 @@
+import type { VariantProps } from "class-variance-authority";
 import type { Route } from "next";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
@@ -7,15 +8,21 @@ export default function LinkButton({
   children,
   href,
   className,
+  variant = "link",
+  ...sizeProps
 }: {
   children: React.ReactNode;
   className?: string;
   href: Route;
-}) {
+} & VariantProps<typeof buttonVariants>) {
   return (
     <Link
       href={href}
-      className={cn(buttonVariants({ variant: "link" }), "text-sm", className)}
+      className={cn(
+        buttonVariants({ variant, ...sizeProps }),
+        "text-sm",
+        className,
+      )}
     >
       {children}
     </Link>
