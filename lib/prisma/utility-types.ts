@@ -5,7 +5,7 @@ export const INVOICE_STATUS: Record<InvoiceStatus, string> = {
   paid: "Paid",
   pending: "Pending",
 };
-export const INVOICE_STATUS_FILTER = Object.entries(INVOICE_STATUS).map(
+export const INVOICE_STATUS_OPTIONS = Object.entries(INVOICE_STATUS).map(
   ([value, label]) => ({
     value,
     label,
