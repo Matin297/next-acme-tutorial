@@ -3,6 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { cn } from "@/lib/utils";
 import { geistSans, jetbrainsMono } from "./fonts";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body>
+        <Toaster />
         <NuqsAdapter>{children}</NuqsAdapter>
       </body>
     </html>
