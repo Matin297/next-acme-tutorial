@@ -1,8 +1,13 @@
+import { cacheTag } from "next/cache";
 import { db } from "@/lib/prisma/db";
 
 export async function fetchRevenue() {
+  "use cache";
+
+  cacheTag("revenue");
+
   try {
-    const data = db.orm.public.Revenue.select("month", "revenue").all();
+    const data = await db.orm.public.Revenue.select("month", "revenue").all();
     return data;
   } catch (error) {
     console.error("Database Error:", error);
@@ -13,6 +18,10 @@ export async function fetchRevenue() {
 export type TRevenues = Awaited<ReturnType<typeof fetchRevenue>>;
 
 export async function fetchLatestInvoices(limit: number) {
+  "use cache";
+
+  cacheTag("latest-invoices");
+
   try {
     const data = await db.orm.public.Invoice.orderBy((invoice) =>
       invoice.date.desc(),
@@ -29,11 +38,15 @@ export async function fetchLatestInvoices(limit: number) {
     };
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch Invloices data.");
+    throw new Error("Failed to fetch Invoices data.");
   }
 }
 
 export async function fetchDashboardStats() {
+  "use cache";
+
+  cacheTag("dashboard-stats");
+
   try {
     const invoicesStatsQuery = db.orm.public.Invoice.groupBy(
       "status",

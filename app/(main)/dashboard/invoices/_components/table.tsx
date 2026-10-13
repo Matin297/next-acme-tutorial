@@ -31,7 +31,7 @@ export default function InvoicesTable({
     "filters",
     parseAsJson(invoiceFiltersSchema)
       .withDefault([])
-      .withOptions({ startTransition }),
+      .withOptions({ startTransition, shallow: false }),
   );
 
   const [pagination, setPagination] = useQueryState<PaginationState>(
@@ -41,7 +41,7 @@ export default function InvoicesTable({
         pageIndex: 0,
         pageSize: 5,
       })
-      .withOptions({ startTransition }),
+      .withOptions({ startTransition, shallow: false }),
   );
 
   const table = useTable({

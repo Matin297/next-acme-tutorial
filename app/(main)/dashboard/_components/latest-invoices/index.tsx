@@ -1,9 +1,9 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { formatNumber, getNameInitials } from "@/lib/utils";
 import { fetchLatestInvoices } from "../../data";
+import DateInfo from "./date-info";
 
 export default async function LatestInvoices() {
   const { data: invoices, lastUpdated } = await fetchLatestInvoices(5);
@@ -36,11 +36,7 @@ export default async function LatestInvoices() {
       </CardContent>
       <CardFooter className="text-muted-foreground gap-1">
         <ArrowPathIcon className="w-4" />
-        <p className="text-xs">
-          {formatDistanceToNow(lastUpdated, {
-            addSuffix: true,
-          })}
-        </p>
+        <DateInfo date={lastUpdated} />
       </CardFooter>
     </>
   );

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -17,7 +18,7 @@ export default function DataTableSkeleton() {
         <TableHeader>
           <TableRow>
             {PLACEHOLDER.map((_, index) => (
-              <TableHead key={`header-row-${Math.random()}-${index}`}>
+              <TableHead key={`header-row-${index}`}>
                 <Skeleton className="h-4 w-24" />
               </TableHead>
             ))}
@@ -26,7 +27,7 @@ export default function DataTableSkeleton() {
 
         <TableBody>
           {PLACEHOLDER.map((_, index) => (
-            <TableRow key={`body-row-${Math.random()}-${index}`}>
+            <TableRow key={`body-row-${index}`}>
               <TableCell>
                 <div className="space-y-1.5">
                   <Skeleton className="h-4 w-28" />
