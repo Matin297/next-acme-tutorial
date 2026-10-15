@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
-import LinkButton from "@/components/link-button";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -64,6 +63,11 @@ export default function CreateInvoiceForm({
       status: "pending",
     },
   });
+
+  function onCancel() {
+    form.reset();
+    router.push("/dashboard/invoices");
+  }
 
   async function onSubmit(data: TCreateInvoice) {
     const { success, error, errors } = await createInvoice(data);
@@ -262,9 +266,9 @@ export default function CreateInvoiceForm({
       </FieldSet>
 
       <section className="mt-4 flex items-center gap-4 justify-end">
-        <LinkButton variant="destructive" href="/dashboard/invoices">
+        <Button variant="destructive" onClick={onCancel}>
           Cancel
-        </LinkButton>
+        </Button>
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting && <Spinner />}
           Create

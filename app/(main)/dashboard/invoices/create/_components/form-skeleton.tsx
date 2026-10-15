@@ -3,7 +3,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CreateInvoiceSkeleton() {
   return (
-    <FieldSet aria-label="Loading invoice form" aria-busy="true">
+    <FieldSet
+      aria-label="Loading invoice form"
+      aria-busy="true"
+      className="max-w-3xl mx-auto"
+    >
       <FieldGroup>
         <FieldLegend>
           <Skeleton className="h-6 w-32" />
