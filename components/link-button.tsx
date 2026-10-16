@@ -4,17 +4,20 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export default function LinkButton({
+interface LinkButtonProps<T extends string>
+  extends VariantProps<typeof buttonVariants> {
+  children: React.ReactNode;
+  className?: string;
+  href: Route<T>;
+}
+
+export default function LinkButton<T extends string>({
   children,
   href,
   className,
   variant = "link",
   ...sizeProps
-}: {
-  children: React.ReactNode;
-  className?: string;
-  href: Route;
-} & VariantProps<typeof buttonVariants>) {
+}: LinkButtonProps<T>) {
   return (
     <Link
       href={href}
