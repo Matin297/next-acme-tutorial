@@ -93,20 +93,21 @@ export default function CreateInvoiceForm({
     }
   }
 
+  const isSubmitting = form.formState.isSubmitting;
+
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-3xl mx-auto">
       <FieldSet>
         <FieldGroup>
           <FieldLegend>Create Invoice</FieldLegend>
           <Controller
-            disabled={form.formState.isSubmitting}
             name="customerId"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="invoice-customer-id">Customer</FieldLabel>
                 <Select
-                  disabled={field.disabled}
+                  disabled={isSubmitting}
                   items={customers}
                   name={field.name}
                   value={field.value}
@@ -136,14 +137,13 @@ export default function CreateInvoiceForm({
 
           <Controller
             name="amount"
-            disabled={form.formState.isSubmitting}
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="invoice-amount">Amount</FieldLabel>
                 <InputGroup>
                   <InputGroupAddon
-                    className={cn({ "opacity-50": field.disabled })}
+                    className={cn({ "opacity-50": isSubmitting })}
                   >
                     <CurrencyDollarIcon className="w-4" />
                   </InputGroupAddon>
@@ -154,7 +154,7 @@ export default function CreateInvoiceForm({
                     onValueChange={({ value }) => {
                       field.onChange(value);
                     }}
-                    disabled={field.disabled}
+                    disabled={isSubmitting}
                     onBlur={field.onBlur}
                     id="invoice-amount"
                     placeholder="100"
@@ -177,7 +177,6 @@ export default function CreateInvoiceForm({
 
           <Controller
             name="date"
-            disabled={form.formState.isSubmitting}
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
@@ -189,7 +188,7 @@ export default function CreateInvoiceForm({
                         aria-invalid={fieldState.invalid}
                         variant="outline"
                         data-empty={!field.value}
-                        disabled={field.disabled}
+                        disabled={isSubmitting}
                         className="justify-between font-normal disabled:text-muted-foreground data-[empty=true]:text-muted-foreground"
                       >
                         <span>
@@ -220,14 +219,14 @@ export default function CreateInvoiceForm({
           <Controller
             name="status"
             control={form.control}
-            disabled={form.formState.isSubmitting}
             render={({ field, fieldState }) => (
               <FieldSet
                 data-invalid={fieldState.invalid}
-                disabled={field.disabled}
+                disabled={isSubmitting}
               >
                 <FieldLabel>Status</FieldLabel>
                 <RadioGroup
+                  disabled={isSubmitting}
                   name={field.name}
                   value={field.value}
                   onValueChange={field.onChange}
@@ -243,7 +242,7 @@ export default function CreateInvoiceForm({
                         data-invalid={fieldState.invalid}
                         className={cn({
                           "opacity-50 text-muted-foreground cursor-not-allowed":
-                            field.disabled,
+                            isSubmitting,
                         })}
                       >
                         <FieldTitle>{status.label}</FieldTitle>
@@ -269,8 +268,8 @@ export default function CreateInvoiceForm({
         <Button variant="destructive" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting && <Spinner />}
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting && <Spinner />}
           Create
         </Button>
       </section>
