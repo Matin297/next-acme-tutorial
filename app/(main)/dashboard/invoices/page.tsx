@@ -39,7 +39,7 @@ export default async function InvoicesPage({
   return (
     <section className="space-y-4">
       <div className="flex justify-between gap-1 flex-wrap">
-        <h1>Invoices</h1>
+        <h1 className="text-xl font-extrabold">Invoices</h1>
         <LinkButton variant="default" href="/dashboard/invoices/create">
           <PlusIcon />
           Create Invoice

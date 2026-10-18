@@ -1,6 +1,8 @@
+import { PencilIcon } from "@heroicons/react/24/outline";
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 import type { TFeatures } from "@/components/data-table/features";
+import LinkButton from "@/components/link-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { INVOICE_STATUS_OPTIONS } from "@/lib/prisma/utility-types";
 import { formatNumber, getNameInitials } from "@/lib/utils";
@@ -51,6 +53,11 @@ export const columns = columnHelper.columns([
     cell: ({ getValue }) => format(new Date(getValue()), "LLL dd, y"),
     meta: { filterVariant: "date" },
   }),
+  columnHelper.accessor("updatedAt", {
+    header: "Updated At",
+    cell: ({ getValue }) => format(new Date(getValue()), "LLL dd, y"),
+    meta: { filterVariant: "date" },
+  }),
   columnHelper.accessor("status", {
     header: "Status",
     cell: ({ getValue }) => <StatusBadge status={getValue()} />,
@@ -58,5 +65,20 @@ export const columns = columnHelper.columns([
       filterVariant: "checkbox",
       filterOptions: INVOICE_STATUS_OPTIONS,
     },
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => (
+      <section>
+        <LinkButton
+          className="rounded-full"
+          variant="outline"
+          size="icon"
+          href={`/dashboard/invoices/${row.original.id}/edit`}
+        >
+          <PencilIcon />
+        </LinkButton>
+      </section>
+    ),
   }),
 ]);

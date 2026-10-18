@@ -44,9 +44,9 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { INVOICE_STATUS_OPTIONS } from "@/lib/prisma/utility-types";
 import { cn } from "@/lib/utils";
-import { createInvoice } from "../actions";
-import type { TCustomers } from "../data";
-import { createInvoiceSchema, type TCreateInvoice } from "../types";
+import { createInvoice } from "../../actions";
+import type { TCustomers } from "../../data";
+import { createInvoiceSchema, type TCreateInvoice } from "../../types";
 
 export default function CreateInvoiceForm({
   customers,
