@@ -66,3 +66,22 @@ export async function editInvoice(id: string, payload: TCreateInvoice) {
     success: true,
   };
 }
+
+export async function deleteInvoice(id: string) {
+  try {
+    await db.orm.public.Invoice.where({ id }).delete();
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Failed to delete the invoice",
+    };
+  }
+
+  updateTag("latest-invoices");
+  updateTag("dashboard-stats");
+
+  return {
+    success: true,
+  };
+}

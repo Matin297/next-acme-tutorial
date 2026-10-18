@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { INVOICE_STATUS_OPTIONS } from "@/lib/prisma/utility-types";
 import { formatNumber, getNameInitials } from "@/lib/utils";
 import type { TInvoiceData } from "../data";
+import DeleteInvoiceForm from "./delete-invoice-form";
 import StatusBadge from "./status-badge";
 
 const columnHelper = createColumnHelper<TFeatures, TInvoiceData>();
@@ -69,7 +70,7 @@ export const columns = columnHelper.columns([
   columnHelper.display({
     id: "actions",
     cell: ({ row }) => (
-      <section>
+      <section className="flex gap-1">
         <LinkButton
           className="rounded-full"
           variant="outline"
@@ -78,6 +79,7 @@ export const columns = columnHelper.columns([
         >
           <PencilIcon />
         </LinkButton>
+        <DeleteInvoiceForm id={row.original.id} />
       </section>
     ),
   }),
