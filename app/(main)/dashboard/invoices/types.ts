@@ -27,6 +27,10 @@ export const invoiceFilterSchema = z.discriminatedUnion("id", [
     id: z.literal("date"),
     value: dateRangeFilterValueSchema,
   }),
+  z.object({
+    id: z.literal("updatedAt"),
+    value: dateRangeFilterValueSchema,
+  }),
 ]);
 
 export const invoiceFiltersSchema = z.array(z.any()).transform((filters) =>
@@ -37,3 +41,15 @@ export const invoiceFiltersSchema = z.array(z.any()).transform((filters) =>
 );
 
 export type TInvoiceFilters = z.output<typeof invoiceFiltersSchema>;
+
+export const createInvoiceSchema = z.object({
+  customerId: z.string().min(1, "Customer is required"),
+  amount: z.coerce
+    .number<number>()
+    .int("Amount should be an integer")
+    .positive("Amount must be greater than 0"),
+  status: z.enum(["paid", "pending"] as InvoiceStatus[]),
+  date: z.date("Invalid date"),
+});
+
+export type TCreateInvoice = z.infer<typeof createInvoiceSchema>;

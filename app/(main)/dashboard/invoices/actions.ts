@@ -35,3 +35,34 @@ export async function createInvoice(payload: TCreateInvoice) {
     success: true,
   };
 }
+
+export async function editInvoice(id: string, payload: TCreateInvoice) {
+  const { success, data, error } = createInvoiceSchema.safeParse(payload);
+
+  if (!success) {
+    return {
+      success: false,
+      errors: z.flattenError(error).fieldErrors,
+    };
+  }
+
+  try {
+    await db.orm.public.Invoice.where({ id }).update({
+      ...data,
+      date: data.date.toTemporalInstant(),
+    });
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Failed to update the invoice. Try again please.",
+    };
+  }
+
+  updateTag("latest-invoices");
+  updateTag(`invoice-${id}`);
+
+  return {
+    success: true,
+  };
+}
