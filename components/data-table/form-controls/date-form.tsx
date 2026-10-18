@@ -33,7 +33,7 @@ export default function DateForm<TData extends RowData>({
   }
 
   function onClear() {
-    form.reset(undefined);
+    form.reset({ value: undefined });
     column.setFilterValue(undefined);
     column.table.resetPageIndex();
   }
