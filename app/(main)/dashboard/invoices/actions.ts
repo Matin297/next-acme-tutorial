@@ -69,7 +69,13 @@ export async function editInvoice(id: string, payload: TCreateInvoice) {
 
 export async function deleteInvoice(id: string) {
   try {
-    await db.orm.public.Invoice.where({ id }).delete();
+    const result = await db.orm.public.Invoice.where({ id }).delete();
+    if (result === null) {
+      return {
+        success: false,
+        error: "The invoice does not exist.",
+      };
+    }
   } catch (error) {
     console.error(error);
     return {
