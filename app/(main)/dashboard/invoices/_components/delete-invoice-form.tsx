@@ -14,17 +14,13 @@ export default function DeleteInvoiceForm({ id }: { id: string }) {
     event.preventDefault();
 
     startTransition(async () => {
-      try {
-        const result = await deleteInvoice(id);
-        if (result.success) {
-          toast.success("Invoice deleted successfully");
-          return;
-        }
-
-        toast.error(result.error, { dismissible: true });
-      } catch {
-        toast.error("Failed to delete the invoice. Something went wrong.");
+      const result = await deleteInvoice(id);
+      if (result.success) {
+        toast.success("Invoice deleted successfully");
+        return;
       }
+
+      toast.error(result.error, { dismissible: true });
     });
   }
 
