@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Navbar from "./_components/navbar";
 import Sidebar from "./_components/sidebar";
 
@@ -13,7 +14,9 @@ export default function MainLayout({
       </header>
       <aside className="border-r p-4 hidden md:block">
         <section className="sticky top-12">
-          <Sidebar />
+          <Suspense>
+            <Sidebar />
+          </Suspense>
         </section>
       </aside>
       <main className="p-4">{children}</main>
