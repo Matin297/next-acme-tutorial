@@ -1,3 +1,10 @@
-export default function Login() {
-  return <p>Login page</p>;
+import { Suspense } from "react";
+import LoginForm from "./_components/form";
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  );
 }
