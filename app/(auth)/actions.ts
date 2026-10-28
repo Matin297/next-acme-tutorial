@@ -1,12 +1,12 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { signIn } from "@/auth";
+import * as auth from "@/auth";
 import type { TCredentials } from "./types";
 
 export async function authenticate(payload: TCredentials) {
   try {
-    await signIn("credentials", payload);
+    await auth.signIn("credentials", payload);
   } catch (error) {
     if (error instanceof AuthError) {
       console.error(error);
@@ -19,4 +19,8 @@ export async function authenticate(payload: TCredentials) {
     }
     throw error;
   }
+}
+
+export async function signOut() {
+  await auth.signOut({ redirectTo: "/login" });
 }
