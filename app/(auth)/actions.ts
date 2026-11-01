@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { AuthError } from "next-auth";
 import * as z from "zod";
 import * as auth from "@/auth";
+import { isUniqueConstraintViolation } from "@/lib/error";
 import { db } from "@/lib/prisma/db";
 import { signupBaseSchema, type TCredentials, type TSignup } from "./types";
 
@@ -49,6 +50,14 @@ export async function signUp(payload: TSignup) {
     });
   } catch (error) {
     console.error(error);
+
+    if (isUniqueConstraintViolation(error)) {
+      return {
+        success: false,
+        error: "An account with this email already exists.",
+      };
+    }
+
     return {
       success: false,
       error: "Unable to create your account. Please try again.",
