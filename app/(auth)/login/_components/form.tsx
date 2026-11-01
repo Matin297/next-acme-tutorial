@@ -41,6 +41,7 @@ export default function LoginForm() {
   });
 
   async function onSubmit(data: TCredentials) {
+    form.reset();
     const result = await authenticate(data);
     if (result) {
       toast.error(result);

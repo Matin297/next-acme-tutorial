@@ -32,12 +32,7 @@ export function AvatarMenu() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            onClick={async () => {
-              await signOut();
-            }}
-            variant="destructive"
-          >
+          <DropdownMenuItem onClick={signOut} variant="destructive">
             Log out
           </DropdownMenuItem>
         </DropdownMenuGroup>
