@@ -8,6 +8,7 @@ import PasswordController from "@/components/password-controller";
 import { Button } from "@/components/ui/button";
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -15,9 +16,19 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Spinner } from "@/components/ui/spinner";
 import { signUp } from "../../actions";
 import { signupSchema, type TSignup } from "../../types";
+import { useAccountAvailability } from "../use-account-availability";
+
+const FORM_ERROR_TYPES = {
+  AVAILABILITY: "availability",
+};
 
 export default function SignupForm() {
   const router = useRouter();
@@ -33,7 +44,24 @@ export default function SignupForm() {
   });
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmitHandler(data: TSignup) {
+  const accountAvailability = useAccountAvailability({
+    handleUnavailable: (message) => {
+      form.setError("email", {
+        message,
+        type: FORM_ERROR_TYPES.AVAILABILITY,
+      });
+    },
+    handleAvailable: () => {
+      if (
+        form.getFieldState("email").error?.type ===
+        FORM_ERROR_TYPES.AVAILABILITY
+      ) {
+        form.clearErrors("email");
+      }
+    },
+  });
+
+  async function handlerFormSubmit(data: TSignup) {
     const { success, error, errors } = await signUp(data);
 
     if (success) {
@@ -57,8 +85,13 @@ export default function SignupForm() {
     }
   }
 
+  function handlerFormReset() {
+    accountAvailability.reset();
+    form.reset();
+  }
+
   return (
-    <form onSubmit={form.handleSubmit(onSubmitHandler)}>
+    <form onSubmit={form.handleSubmit(handlerFormSubmit)}>
       <FieldSet>
         <FieldLegend className="text-center mb-10">
           <h1 className="font-extrabold text-xl">SignUp</h1>
@@ -70,13 +103,31 @@ export default function SignupForm() {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  {...field}
-                  disabled={field.disabled || isSubmitting}
-                  id="email"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="a@a.com"
-                />
+                <InputGroup>
+                  <InputGroupInput
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      accountAvailability.handleChange(e.target.value);
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      accountAvailability.flush();
+                    }}
+                    disabled={field.disabled || isSubmitting}
+                    id="email"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="a@a.com"
+                  />
+                  <InputGroupAddon align="inline-end">
+                    {accountAvailability.statusIcon}
+                  </InputGroupAddon>
+                </InputGroup>
+                {accountAvailability.statusText && (
+                  <FieldDescription aria-live="polite">
+                    {accountAvailability.statusText}
+                  </FieldDescription>
+                )}
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -121,16 +172,13 @@ export default function SignupForm() {
       </FieldSet>
 
       <section className="flex gap-1 mt-4 justify-end">
-        <Button disabled={isSubmitting} type="submit">
+        <Button
+          disabled={isSubmitting || accountAvailability.isPending}
+          type="submit"
+        >
           {isSubmitting && <Spinner />} Sign up
         </Button>
-        <Button
-          type="reset"
-          variant="secondary"
-          onClick={() => {
-            form.reset();
-          }}
-        >
+        <Button type="reset" variant="secondary" onClick={handlerFormReset}>
           Reset
         </Button>
       </section>

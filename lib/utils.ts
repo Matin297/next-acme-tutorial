@@ -1,3 +1,4 @@
+import { isIP } from "node:net";
 import type { SearchParams } from "nuqs/server";
 
 export { cn } from "cn";
@@ -29,4 +30,24 @@ export function generateURLSearchParams(params: SearchParams) {
   }
 
   return urlSearchParams;
+}
+
+/**
+ * @SEE https://vercel.com/docs/headers/request-headers#x-forwarded-for
+ *
+ * Extracts the client IP from Vercel's x-forwarded-for header.
+ *
+ * Assumes the request passes through Vercel's trusted proxy infrastructure.
+ * Revisit this implementation if the hosting platform or proxy configuration changes.
+ */
+export function getClientIp(request: Request): string | null {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+
+  if (!forwardedFor) {
+    return process.env.NODE_ENV === "development" ? "127.0.0.1" : null;
+  }
+
+  const ip = forwardedFor.trim();
+
+  return isIP(ip) ? ip : null;
 }
